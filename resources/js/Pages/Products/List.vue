@@ -33,7 +33,8 @@
               />
             </form>
             <span class="sm:ml-3">
-              <button
+              <inertia-link
+                :href="route('products.add')"
                 type="button"
                 class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
@@ -51,8 +52,8 @@
                     d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
                   />
                 </svg>
-                Create products
-              </button>
+                Add products
+              </inertia-link>
             </span>
           </div>
         </div>
@@ -266,28 +267,28 @@ export default {
       pageSize: 10,
       search: "",
       pages: 0,
-      productsFiltered: []
+      productsFiltered: [],
     };
   },
 
   props: ["products"],
 
-  mounted: function() {
-    this.filteringProducts()
+  mounted: function () {    
+    this.filteringProducts();
   },
 
   watch: {
-    search: function(){
-      this.filteringProducts()
+    currentPage: function () {
+      this.filteringProducts();
     },
-    currentPage: function(){
-      this.filteringProducts()
+    search: function () {
+      this.filteringProducts();
     },
   },
 
   methods: {
     filteringProducts: function () {
-      var products = this.products.filter((row, index) => {
+      var products = this.products.filter((row) => {
         return this.search
           .toLowerCase()
           .split(" ")
@@ -338,13 +339,14 @@ export default {
           axios
             .post(`/products/${id}/delete`)
             .then((res) => {
-              this.productsFiltered = this.productsFiltered.filter(item => item.id != id)
+              this.productsFiltered = this.productsFiltered.filter(
+                (item) => item.id != id
+              );
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
             })
             .catch((res) => console.log(res));
         }
       });
-
     },
   },
 };

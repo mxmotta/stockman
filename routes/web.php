@@ -20,5 +20,10 @@ use Inertia\Inertia;
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/', [ProductsController::class, 'list'])->name('products.list');
-    Route::post('/products/{id}/delete', [ProductsController::class, 'delete'])->name('products.delete');
+    Route::prefix('/products')->group(function () {
+        Route::get('/', [ProductsController::class, 'list'])->name('products.list');
+        Route::post('/', [ProductsController::class, 'store'])->name('products.store');
+        Route::get('/add', [ProductsController::class, 'add'])->name('products.add');
+        Route::post('/{id}/delete', [ProductsController::class, 'delete'])->name('products.delete');
+    });
 });
