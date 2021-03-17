@@ -90,10 +90,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="movement in historic"
-                        :key="movement.id"
-                      >
+                      <tr v-for="movement in historic" :key="movement.id">
                         <td class="px-6 py-4 whitespace-nowrap">
                           {{ date(movement.created_at) }}
                         </td>
@@ -109,6 +106,7 @@
                           class="px-6 py-4 whitespace-nowrap"
                         >
                           <svg
+                            v-if="movement.type == 'in'"
                             class="mx-1 h-5 w-5"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -119,7 +117,22 @@
                               stroke-linecap="round"
                               stroke-linejoin="round"
                               stroke-width="2"
-                              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                            />
+                          </svg>
+                          <svg
+                            v-if="movement.type == 'out'"
+                            class="mx-1 h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                             />
                           </svg>
                         </td>
@@ -181,13 +194,18 @@
                         min="0"
                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <span
+                        class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+                      >
+                        {{ errors.quantity ? errors.quantity[0] : "" }}
+                      </span>
                     </div>
 
                     <div class="col-span-2">
                       <label
                         for="quantity"
                         class="block text-sm font-medium text-gray-700"
-                        >Quantity</label
+                        >Type</label
                       >
                       <select
                         id="type"
@@ -239,11 +257,11 @@ export default {
     return {
       movement: { quantity: 0, type: "in" },
       hideModal: true,
+      errors: [],
     };
   },
 
   props: ["product", "historic"],
-
   methods: {
     currency: function (value) {
       if (!value) return "";
@@ -256,13 +274,30 @@ export default {
       return date.replace(/T/, " ").replace(/\..+/, "");
     },
     addMovement: function () {
-      this.$inertia.post(`/products/${this.product.id}/movement`, {
-        ...this.movement,
-        _token: this.$page.props.csrf_token,
-      }).then((res) => {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(()=>window.location.reload);
-      });
-      this.hideModal = true;
+      this.$inertia.post(
+        `/products/${this.product.id}/movement`,
+        {
+          ...this.movement,
+          _token: this.$page.props.csrf_token,
+        },
+        {
+          errorBags: "productMovement",
+          onError: (res) => {
+            this.errors = res.productMovement;
+            console.log(this.errors.quantity);
+          },
+          onSuccess: () => {
+            this.movement.quantity = 0;
+            this.movement.type = "in";
+            this.hideModal = true;
+            Swal.fire(
+              "Success!",
+              "Movement created successfully.",
+              "success"
+            ).then(() => window.location.reload);
+          },
+        }
+      );
     },
   },
 };

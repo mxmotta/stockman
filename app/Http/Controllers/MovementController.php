@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProductMovementRequest;
 
 class MovementController extends Controller
 {
-    public function addMovement(Request $request)
+    public function addMovement(ProductMovementRequest $request)
     {
         try {
             $data = $request->all();

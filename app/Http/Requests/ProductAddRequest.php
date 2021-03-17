@@ -26,8 +26,19 @@ class ProductAddRequest extends FormRequest
     public function rules()
     {
         return [
-            // '*.name'    =>  ['integer'],
-            // '*.price'    =>  ['string'],
+            '*.name'        =>  ['required'],
+            '*.price'       =>  ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            '*.quantity'    =>  ['required'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            '*.name.required'       => 'Name is required.',
+            '*.price.required'      => 'Price is required.',
+            '*.price.regex'         => 'Price must be a valid value.',
+            '*.quantity.required'   => 'Quantity is required.'
         ];
     }
 }

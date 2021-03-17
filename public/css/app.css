@@ -32717,6 +32717,23 @@ select {
           animation: bounce 1s infinite;
 }
 
+.tooltip {
+  position: absolute;
+  visibility: hidden;
+}
+
+.has-tooltip:hover .tooltip {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.75;
+  margin-left: -0.5rem;
+  margin-top: -3rem;
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
+  visibility: visible;
+  z-index: 50
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -192176,4 +192193,3 @@ select {
             animation: bounce 1s infinite;
   }
 }
-

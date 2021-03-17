@@ -134,8 +134,9 @@
                         <td class="px-6 py-4 text-right text-sm font-medium">
                           <inertia-link
                             :href="route('products.view', product.id)"
-                            class="inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-indigo-500 hover:text-indigo-700 focus:outline-none"
+                            class="has-tooltip inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-indigo-500 hover:text-indigo-700 focus:outline-none"
                           >
+                          <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-red-500 -mt-8'>Detail</span>
                             <svg
                               class="mx-1 h-5 w-5"
                               xmlns="http://www.w3.org/2000/svg"
@@ -153,8 +154,9 @@
                           </inertia-link>
                           <inertia-link
                             :href="route('products.edit', product.id)"
-                            class="inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-indigo-500 hover:text-indigo-700 focus:outline-none"
+                            class="has-tooltip inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-indigo-500 hover:text-indigo-700 focus:outline-none"
                           >
+                          <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-red-500 -mt-8'>Edit</span>
                             <svg
                               class="mx-1 h-5 w-5"
                               xmlns="http://www.w3.org/2000/svg"
@@ -173,8 +175,9 @@
                           <button
                             @click.prevent="deleteProduct(product.id)"
                             type="button"
-                            class="inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-red-400 hover:text-red-600 focus:outline-none"
+                            class="has-tooltip inline-flex items-center justify-items-center text-center px-2 py-2 text-sm font-medium text-red-400 hover:text-red-600 focus:outline-none"
                           >
+                          <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-red-500 -mt-8'>Delete</span>
                             <svg
                               class="mx-1 h-5 w-5"
                               xmlns="http://www.w3.org/2000/svg"

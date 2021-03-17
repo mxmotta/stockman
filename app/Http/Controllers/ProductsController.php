@@ -49,7 +49,7 @@ class ProductsController extends Controller
     {
         $product = Product::find($request->id);
         $product['total'] = $product->total;
-
+// dd($product->quantities->sortByDesc('created_at'));
         return Inertia::render('Products/View', [
             'product' => $product,
             'historic' => $product->quantities->sortByDesc('created_at')

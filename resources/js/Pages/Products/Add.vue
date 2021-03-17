@@ -94,6 +94,11 @@
                                       v-model="product.price"
                                       class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-gray-300 rounded-r-md px-3 relative"
                                     />
+                                  <span
+                                    class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+                                  >
+                                    {{ getError(index, 'price') }}
+                                  </span>
                                   </div>
                                 </div>
 
@@ -116,6 +121,7 @@
                                   <span
                                     class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
                                   >
+                                    {{ getError(index, 'quantity') }}
                                   </span>
                                 </div>
 
@@ -223,11 +229,13 @@ export default {
       );
     },
     getError(row, field) {
+      var message = ''
       this.errors.filter((item) => {
         if (item.row == row && item.field == field) {
-          return item.message[0]
+          message = item.message[0]
         };
       });
+      return message
     },
   },
 };
