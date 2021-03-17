@@ -45,7 +45,13 @@ npm run dev (or prod to production)
 php artisan migrate 
 ```
 
-7 - Run the serve
+7 - Run seeds to create a default user
+
+```bash
+php artisan db:seed 
+```
+
+8 - Run the serve
 
 ```bash
 php artisan serve
@@ -71,4 +77,17 @@ php artisan sail:install
 
 ```bash
 docker exec -it container-name php artisan migrate 
+```
+
+4 - Run seeds to create a default user
+
+```bash
+docker exec -it container-name php artisan db:seed 
+```
+
+## Default Login
+
+```bash
+username: user@user.com
+password: user
 ```
