@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProductAddRequest extends FormRequest
 {
+    protected $errorBag = 'productAdd';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +26,8 @@ class ProductAddRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            // '*.name'    =>  ['integer'],
+            // '*.price'    =>  ['string'],
         ];
     }
 }

@@ -14,6 +14,7 @@ const app = createApp({
         h(InertiaApp, {
             initialPage: JSON.parse(el.dataset.page),
             resolveComponent: (name) => require(`./Pages/${name}`).default,
+            resolveErrors: page => (page.props.errorBags || {}),
         }),
 })
     .mixin({ methods: { route } })

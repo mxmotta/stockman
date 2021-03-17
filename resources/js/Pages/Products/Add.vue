@@ -50,7 +50,7 @@
                                 class="grid grid-cols-12 gap-12 mt-5"
                               >
                                 <div
-                                  class="col-span-6 sm:col-span-3 lg:col-span-8"
+                                  class="col-span-6 sm:col-span-3 lg:col-span-7"
                                 >
                                   <label
                                     for="first_name"
@@ -65,10 +65,15 @@
                                     autocomplete="given-name"
                                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                   />
+                                  <span
+                                    class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+                                  >
+                                    {{ getError(index, 'name') }}
+                                  </span>
                                 </div>
 
                                 <div
-                                  class="col-span-6 sm:col-span-3 lg:col-span-3"
+                                  class="col-span-6 sm:col-span-3 lg:col-span-2"
                                 >
                                   <label
                                     for="first_name"
@@ -91,6 +96,29 @@
                                     />
                                   </div>
                                 </div>
+
+                                <div
+                                  class="col-span-6 sm:col-span-3 lg:col-span-2"
+                                >
+                                  <label
+                                    for="quantity"
+                                    class="block text-sm font-medium text-gray-700"
+                                    >Quantity</label
+                                  >
+                                  <input
+                                    type="number"
+                                    name="quantity"
+                                    v-model="product.quantity"
+                                    id="quantity"
+                                    min="0"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                  />
+                                  <span
+                                    class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+                                  >
+                                  </span>
+                                </div>
+
                                 <div
                                   class="col-span-6 sm:col-span-3 lg:col-span-1"
                                 >
@@ -149,34 +177,57 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
-import Swal from "sweetalert2";
 
 export default {
   data: function () {
     return {
-      products: [
-        {name: '', price: 0}
-      ],
+      products: [{ name: "", price: 0, quantity: 0 }],
+      errors: [],
     };
   },
+
   components: {
     AppLayout,
   },
 
   methods: {
     addRow() {
-      this.products.push({name: '', price: 0});
+      this.products.push({ name: "", price: 0 });
     },
     removeRow(row) {
-      if (this.products.length > 0){
+      if (this.products.length > 0) {
         this.products = this.products.filter((item, index) => index != row);
       }
     },
     addProducts() {
-        this.$inertia.post("/products", {
+      this.$inertia.post(
+        "/products",
+        {
           ...this.products,
           _token: this.$page.props.csrf_token,
-        });
+        },
+        {
+          errorBags: "productAdd",
+          onError: (res) => {
+            var errors = [];
+            Object.entries(res.productAdd).forEach((element) => {
+              errors.push({
+                row: element[0].split(".")[0],
+                field: element[0].split(".")[1],
+                message: element[1],
+              });
+            });
+            this.errors = errors;
+          },
+        }
+      );
+    },
+    getError(row, field) {
+      this.errors.filter((item) => {
+        if (item.row == row && item.field == field) {
+          return item.message[0]
+        };
+      });
     },
   },
 };

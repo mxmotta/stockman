@@ -13,4 +13,24 @@ class Product extends Model
         'name',
         'price'
     ];
+
+    public function quantities()
+    {
+        return $this->hasMany(ProductQuantity::class);
+    }
+
+    public function getInAttribute()
+    {
+        return $this->quantities()->where('type', 'in')->sum('quantity');        
+    }
+
+    public function getOutAttribute()
+    {
+        return $this->quantities()->where('type', 'out')->sum('quantity');        
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->in - $this->out;
+    }
 }
